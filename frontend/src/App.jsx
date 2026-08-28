@@ -4,6 +4,7 @@ import axios from "axios";
 function App() {
   const canvasRef = useRef(null);
   const temporizadorRef = useRef(null);
+  const intervaloRef = useRef(null);
 
   const [dibujando, setDibujando] = useState(false);
   const [predicciones, setPredicciones] = useState([]);
@@ -18,10 +19,15 @@ function App() {
 
     setDibujando(true);
     setProgramaActivo(true);
+    
 
     if (temporizadorRef.current) {
       clearTimeout(temporizadorRef.current);
     }
+
+    intervaloRef.current = setInterval(() => {
+      adivinar();
+    }, 1500);
   };
 
   const dibujar = (e) => {
@@ -44,6 +50,10 @@ function App() {
 
     setDibujando(false);
 
+    if (intervaloRef.current) {
+      clearInterval(intervaloRef.current);
+    }
+
     temporizadorRef.current = setTimeout(() => {
       adivinar();
     }, 1500);
@@ -60,6 +70,10 @@ function App() {
 
     if (temporizadorRef.current) {
       clearTimeout(temporizadorRef.current);
+    }
+
+    if (intervaloRef.current) {
+      clearInterval(intervaloRef.current);
     }
   };
 
