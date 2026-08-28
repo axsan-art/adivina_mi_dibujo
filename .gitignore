@@ -1,0 +1,9 @@
+.venv/
+.venv-convert/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+.env
+.env.local
+dibujo_recibido.png
