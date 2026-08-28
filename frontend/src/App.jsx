@@ -99,7 +99,11 @@ function App() {
   };
 
   return (
-    <div>
+    <div style={{
+      minHeight: "100vh",
+      padding: "30px",
+      background: "linear-gradient(135deg, #2563eb, #7c3aed, #ec4899)"
+    }}>
       <h1>Adivina mi dibujo</h1>
 
       {programaActivo && (
@@ -133,10 +137,12 @@ function App() {
       </button>
 
       <div>
-        <h2>Predicciones</h2>
+        <h2 style={{ color: "#fb923c" }}>Predicciones</h2>
 
         {predicciones.map((prediccion, indice) => (
-          <p key={indice}>
+          <p key={indice}
+            style={{ color: "#86efac" }}
+          >
             {indice + 1}. {prediccion.clase} -{" "}
             {(prediccion.confianza * 100).toFixed(2)}%
           </p>
