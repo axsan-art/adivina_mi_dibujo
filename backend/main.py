@@ -42,9 +42,32 @@ async def predecir(imagen: UploadFile = File(...)):
     with open("dibujo_recibido.png", "wb") as archivo:
         archivo.write(contenido)
 
-    img = Image.open(io.BytesIO(contenido)) 
-    img = img.convert("L") 
+    # Abrir y preparar la imagen
+    img = Image.open(io.BytesIO(contenido))
+
+    # Crear fondo blanco
+    fondo = Image.new("RGBA", img.size, "white")
+
+    # Colocar el dibujo sobre el fondo blanco
+    fondo.alpha_composite(img)
+
+    # Convertir a escala de grises
+    img = fondo.convert("L")
+
+    # Reducir a 28x28
     img = img.resize((28, 28))
+
+    # Convertir a números
+    datos = np.array(img).astype(np.float32)
+
+    # Invertir colores
+    datos = 255.0 - datos
+
+    # Normalizar
+    datos = datos / 255.0
+
+    # Agregar dimensiones: (1, 28, 28, 1)
+    datos = datos.reshape(1, 28, 28, 1)
 
     print("Suma de píxeles:", np.sum(datos))
     print("Máximo:", np.max(datos))
