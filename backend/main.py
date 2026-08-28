@@ -69,10 +69,6 @@ async def predecir(imagen: UploadFile = File(...)):
     # Agregar dimensiones: (1, 28, 28, 1)
     datos = datos.reshape(1, 28, 28, 1)
 
-    print("Suma de píxeles:", np.sum(datos))
-    print("Máximo:", np.max(datos))
-    print("Mínimo:", np.min(datos))
-
     # Obtener nombre de entrada del modelo
     nombre_entrada = sesion.get_inputs()[0].name
 

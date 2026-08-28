@@ -3,9 +3,11 @@ import axios from "axios";
 
 function App() {
   const canvasRef = useRef(null);
+  const temporizadorRef = useRef(null);
 
   const [dibujando, setDibujando] = useState(false);
   const [predicciones, setPredicciones] = useState([]);
+  const [programaActivo, setProgramaActivo] = useState(false);
 
   const comenzarDibujo = (e) => {
     const canvas = canvasRef.current;
@@ -15,6 +17,11 @@ function App() {
     ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
 
     setDibujando(true);
+    setProgramaActivo(true);
+
+    if (temporizadorRef.current) {
+      clearTimeout(temporizadorRef.current);
+    }
   };
 
   const dibujar = (e) => {
@@ -32,7 +39,14 @@ function App() {
   };
 
   const terminarDibujo = () => {
+
+    if (!dibujando) return;
+
     setDibujando(false);
+
+    temporizadorRef.current = setTimeout(() => {
+      adivinar();
+    }, 1500);
   };
 
   const limpiarCanvas = () => {
@@ -40,7 +54,13 @@ function App() {
     const ctx = canvas.getContext("2d");
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     setPredicciones([]);
+    setProgramaActivo(false);
+
+    if (temporizadorRef.current) {
+      clearTimeout(temporizadorRef.current);
+    }
   };
 
   const adivinar = async () => {
@@ -67,6 +87,12 @@ function App() {
   return (
     <div>
       <h1>Adivina mi dibujo</h1>
+
+      {programaActivo && (
+        <p>
+          🟢 Programa activo - analizando tu dibujo...
+        </p>
+      )}
 
       <canvas
         ref={canvasRef}
